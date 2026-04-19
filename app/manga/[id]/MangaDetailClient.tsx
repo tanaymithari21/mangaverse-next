@@ -1,0 +1,137 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Star, BookOpen, ArrowLeft, Clock, User, Calendar } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import ImageReader from "@/components/ImageReader";
+import axios from "axios";
+
+interface Chapter {
+  id: number;
+  number: number;
+  title: string;
+  imageUrls?: string[];
+}
+
+interface Manga {
+  id: number;
+  title: string;
+  description: string;
+  rating: number;
+  status: "Ongoing" | "Completed";
+  author: string;
+  year: number;
+  chapters: Chapter[];
+  genres: string[];
+  cover: string;
+  chaptersCount?: number;
+}
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
+
+export default function MangaDetailClient({ id }: { id: string }) {
+  const [manga, setManga] = useState<Manga | null>(null);
+  const [readerOpen, setReaderOpen] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    if (!id) return;
+    axios.get(`${API_BASE_URL}/api/manga/${id}`)
+      .then(res => setManga(res.data))
+      .catch(err => console.error("Failed to fetch manga:", err));
+  }, [id]);
+
+  const openChapter = (chapter: Chapter) => {
+    if (!chapter.imageUrls || chapter.imageUrls.length === 0) {
+      alert("Chapter images not available.");
+      return;
+    }
+    setSelectedImages(chapter.imageUrls);
+    setReaderOpen(true);
+  };
+
+  if (!manga) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="flex flex-col items-center justify-center py-32 space-y-4">
+          <BookOpen className="h-16 w-16 text-muted-foreground" />
+          <p className="text-muted-foreground">Loading manga...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="relative h-64 md:h-80 overflow-hidden">
+        {manga.cover && <img src={manga.cover} alt="" className="h-full w-full object-cover opacity-15 blur-2xl scale-125" />}
+        <div className="absolute inset-0" style={{ background: "var(--gradient-dark)" }} />
+      </div>
+
+      <main className="container mx-auto px-4 -mt-32 relative z-10 pb-16">
+        <Link href="/home" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
+          <ArrowLeft className="h-4 w-4" /> Back to catalog
+        </Link>
+
+        <div className="flex flex-col md:flex-row gap-8">
+          <div className="flex-shrink-0">
+            <img src={manga.cover || "/placeholder.svg"} alt={manga.title} className="w-56 md:w-64 rounded-xl shadow-card border border-border/50" />
+          </div>
+          <div className="flex-1 space-y-5">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-black text-foreground" style={{ fontFamily: "var(--font-heading)" }}>{manga.title}</h1>
+              <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1"><User className="h-4 w-4" />{manga.author}</span>
+                <span className="flex items-center gap-1"><Calendar className="h-4 w-4" />{manga.year}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1">
+                <Star className="h-5 w-5 fill-primary text-primary" />
+                <span className="font-bold text-foreground">{manga.rating}</span>
+              </div>
+              <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                <Clock className="h-4 w-4" />{manga.chaptersCount ?? manga.chapters?.length ?? 0} Chapters
+              </span>
+              <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${manga.status === "Ongoing" ? "bg-primary/20 text-primary" : "bg-secondary text-muted-foreground"}`}>
+                {manga.status}
+              </span>
+            </div>
+            <p className="text-secondary-foreground leading-relaxed max-w-2xl">{manga.description}</p>
+            <div className="flex flex-wrap gap-2">
+              {manga.genres?.map(g => <span key={g} className="genre-chip text-sm">{g}</span>)}
+            </div>
+            <button
+              onClick={() => { if (manga.chapters?.[0]) openChapter(manga.chapters[0]); }}
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-white bg-gradient-orange shadow-glow hover:opacity-90 transition-opacity"
+            >
+              <BookOpen className="h-5 w-5" /> Read Now
+            </button>
+          </div>
+        </div>
+
+        <section className="mt-12 space-y-4">
+          <h2 className="text-xl font-bold">Chapters</h2>
+          <div className="grid gap-2">
+            {manga.chapters?.slice(0, 20).map((ch) => (
+              <button key={ch.id} onClick={() => openChapter(ch)} className="flex items-center justify-between px-4 py-3 rounded-lg border border-border bg-card hover:bg-secondary hover:border-primary/30 transition-all group">
+                <span className="text-sm font-medium text-foreground">{ch.number}: {ch.title}</span>
+                <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors">Read →</span>
+              </button>
+            ))}
+          </div>
+          {manga.chapters && manga.chapters.length > 20 && (
+            <p className="text-sm text-muted-foreground text-center">+ {manga.chapters.length - 20} more chapters</p>
+          )}
+        </section>
+      </main>
+
+      {readerOpen && selectedImages && (
+        <ImageReader images={selectedImages} title={manga.title} onClose={() => setReaderOpen(false)} />
+      )}
+    </div>
+  );
+}
