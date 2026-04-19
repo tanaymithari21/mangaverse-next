@@ -3,9 +3,10 @@ import MangaDetailClient from "./MangaDetailClient";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
   try {
-    const res = await fetch(`${API_BASE_URL}/api/manga/${params.id}`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_BASE_URL}/api/manga/${id}`, { next: { revalidate: 3600 } });
     if (!res.ok) return { title: "Manga — MangaVerse" };
     const manga = await res.json();
     return {
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   }
 }
 
-export default function MangaDetailPage({ params }: { params: { id: string } }) {
-  return <MangaDetailClient id={params.id} />;
+export default async function MangaDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return <MangaDetailClient id={id} />;
 }
