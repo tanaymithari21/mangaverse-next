@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { Upload, ArrowLeft, Search, X, ChevronLeft, ChevronRight, Star, BookPlus, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { Upload, ArrowLeft, Search, X, ChevronLeft, ChevronRight, Star, BookPlus, Sparkles, ChevronDown, ChevronUp, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { uploadImagesToCloudinary } from "@/services/uploadToCloudinary";
 
@@ -123,6 +123,23 @@ const ChapterForm = ({ manga, onBack }: { manga: MangaItem; onBack: () => void }
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
   const [showSeo, setShowSeo] = useState(false);
+  const dragIdx = useRef<number | null>(null);
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
+
+  const onDragStart = (idx: number) => { dragIdx.current = idx; };
+  const onDragOver = (e: React.DragEvent, idx: number) => { e.preventDefault(); setDragOverIdx(idx); };
+  const onDrop = (idx: number) => {
+    if (dragIdx.current === null || dragIdx.current === idx) return;
+    setImageFiles(prev => {
+      const arr = [...prev];
+      const [moved] = arr.splice(dragIdx.current!, 1);
+      arr.splice(idx, 0, moved);
+      return arr;
+    });
+    dragIdx.current = null;
+    setDragOverIdx(null);
+  };
+  const onDragEnd = () => { dragIdx.current = null; setDragOverIdx(null); };
 
   const seo = useMemo(
     () => generateChapterMeta(manga.title, chapterNumber, chapterTitle),
@@ -244,9 +261,25 @@ const ChapterForm = ({ manga, onBack }: { manga: MangaItem; onBack: () => void }
         {imageFiles.length > 0 && (
           <div className="mt-3 grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
             {imageFiles.map((file, idx) => (
-              <div key={idx} className="relative group aspect-[3/4] rounded-lg border border-border overflow-hidden">
-                <img src={URL.createObjectURL(file)} alt={`page-${idx + 1}`} className="w-full h-full object-cover" />
+              <div
+                key={idx}
+                draggable
+                onDragStart={() => onDragStart(idx)}
+                onDragOver={e => onDragOver(e, idx)}
+                onDrop={() => onDrop(idx)}
+                onDragEnd={onDragEnd}
+                className={`relative group aspect-[3/4] rounded-lg border overflow-hidden cursor-grab active:cursor-grabbing transition-all ${
+                  dragOverIdx === idx ? "border-primary ring-2 ring-primary scale-95" : "border-border"
+                }`}
+              >
+                <img src={URL.createObjectURL(file)} alt={`page-${idx + 1}`} className="w-full h-full object-cover pointer-events-none" />
+                {/* Page number */}
                 <span className="absolute bottom-0 left-0 right-0 text-center text-[9px] bg-black/60 text-white py-0.5">{idx + 1}</span>
+                {/* Drag handle */}
+                <div className="absolute top-0.5 left-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <GripVertical size={10} className="text-white drop-shadow" />
+                </div>
+                {/* Remove button */}
                 <button onClick={() => removeFile(idx)} className="absolute top-0.5 right-0.5 opacity-0 group-hover:opacity-100 bg-black/70 hover:bg-red-600 rounded-full p-0.5 transition-all">
                   <X size={9} className="text-white" />
                 </button>
