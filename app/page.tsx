@@ -86,7 +86,11 @@ export default function SEOHome() {
 
         {/* Hero */}
         <section className="relative overflow-hidden py-24 px-4">
-          <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(224,92,42,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
+          {/* Animated fluid orange gradient background */}
+          <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
+            <div className="hero-glow-1" />
+            <div className="hero-glow-2" />
+          </div>
           <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-medium mb-2">
               <TrendingUp size={12} /> Updated daily with new chapters
