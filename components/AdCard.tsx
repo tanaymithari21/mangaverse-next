@@ -5,9 +5,9 @@ import { useEffect, useRef, useState } from "react";
 const ADSENSE_CLIENT = "ca-pub-3844369896775247";
 const ADSENSE_SLOT = "5129147754";
 
-const TUTURU_IMAGE = "https://i.imgur.com/7QsJ1bI.png";
+// ✅ NEW FALLBACK VIDEO
+const TUTURU_VIDEO = "https://i.imgur.com/JDBEcQD.mp4";
 
-// ✅ FIX TYPE ERROR HERE
 declare global {
     interface Window {
         adsbygoogle: any[];
@@ -32,7 +32,7 @@ const AdCard = ({ variant = "grid" }: AdCardProps) => {
             timer = setTimeout(() => {
                 setShowFallback(true);
             }, 2500);
-        } catch (err) {
+        } catch {
             setShowFallback(true);
         }
 
@@ -49,6 +49,7 @@ const AdCard = ({ variant = "grid" }: AdCardProps) => {
                 height: "100%",
             }}
         >
+            {/* ADSENSE */}
             <ins
                 className="adsbygoogle"
                 style={{ display: "block", width: "100%", height: "100%" }}
@@ -58,16 +59,21 @@ const AdCard = ({ variant = "grid" }: AdCardProps) => {
                 data-full-width-responsive="true"
             />
 
+            {/* FALLBACK VIDEO */}
             {showFallback && (
-                <div className="absolute inset-0">
-                    <img
-                        src={TUTURU_IMAGE}
-                        className="w-full h-full object-cover"
-                        alt="Tuturu~"
+                <div className="absolute inset-0 flex items-center justify-center bg-black">
+                    <video
+                        src={TUTURU_VIDEO}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-contain"
                     />
                 </div>
             )}
 
+            {/* AD BADGE */}
             <span className="absolute top-2 right-2 text-[9px] font-mono bg-black/70 text-white/50 px-1.5 py-0.5 rounded">
                 AD
             </span>
