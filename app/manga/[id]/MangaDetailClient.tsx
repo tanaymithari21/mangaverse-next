@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Star, BookOpen, ArrowLeft, Clock, User, Calendar } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ImageReader from "@/components/ImageReader";
+import AdCard from "@/components/AdCard"; // ✅ IMPORT
 import axios from "axios";
 
 interface Chapter {
@@ -66,67 +67,85 @@ export default function MangaDetailClient({ id }: { id: string }) {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+
       <div className="relative h-64 md:h-80 overflow-hidden">
         {manga.cover && <img src={manga.cover} alt="" className="h-full w-full object-cover opacity-15 blur-2xl scale-125" />}
         <div className="absolute inset-0" style={{ background: "var(--gradient-dark)" }} />
       </div>
 
       <main className="container mx-auto px-4 -mt-32 relative z-10 pb-16">
-        <Link href="/home" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
+
+        <Link href="/home" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to catalog
         </Link>
 
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+
+          {/* LEFT: COVER */}
           <div className="flex-shrink-0">
-            <img src={manga.cover || "/placeholder.svg"} alt={manga.title} className="w-56 md:w-64 rounded-xl shadow-card border border-border/50" />
+            <img
+              src={manga.cover || "/placeholder.svg"}
+              alt={manga.title}
+              className="w-56 md:w-64 rounded-xl shadow-card border border-border/50"
+            />
           </div>
-          <div className="flex-1 space-y-5">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-black text-foreground" style={{ fontFamily: "var(--font-heading)" }}>{manga.title}</h1>
-              <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1"><User className="h-4 w-4" />{manga.author}</span>
-                <span className="flex items-center gap-1"><Calendar className="h-4 w-4" />{manga.year}</span>
-              </div>
+
+          {/* CENTER: CONTENT */}
+          <div className="flex-1 max-w-2xl space-y-5">
+            <h1 className="text-3xl font-bold">{manga.title}</h1>
+
+            <div className="flex gap-4 text-sm text-muted-foreground">
+              <span><User className="inline w-4" /> {manga.author}</span>
+              <span><Calendar className="inline w-4" /> {manga.year}</span>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1">
-                <Star className="h-5 w-5 fill-primary text-primary" />
-                <span className="font-bold text-foreground">{manga.rating}</span>
-              </div>
-              <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Clock className="h-4 w-4" />{manga.chaptersCount ?? manga.chapters?.length ?? 0} Chapters
-              </span>
-              <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${manga.status === "Ongoing" ? "bg-primary/20 text-primary" : "bg-secondary text-muted-foreground"}`}>
-                {manga.status}
-              </span>
+
+            <div className="flex gap-4">
+              <span>⭐ {manga.rating}</span>
+              <span>{manga.chapters.length} Chapters</span>
             </div>
-            <p className="text-secondary-foreground leading-relaxed max-w-2xl">{manga.description}</p>
-            <div className="flex flex-wrap gap-2">
-              {manga.genres?.map(g => <span key={g} className="genre-chip text-sm">{g}</span>)}
-            </div>
+
+            <p>{manga.description}</p>
+
+            <p className="text-sm text-muted-foreground">
+              Read {manga.title} manga online. Genres: {manga.genres.join(", ")}.
+            </p>
+
             <button
-              onClick={() => { if (manga.chapters?.[0]) openChapter(manga.chapters[0]); }}
-              className="inline-flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-white bg-gradient-orange shadow-glow hover:opacity-90 transition-opacity"
+              onClick={() => openChapter(manga.chapters[0])}
+              className="px-6 py-3 bg-orange-500 text-white rounded-lg"
             >
-              <BookOpen className="h-5 w-5" /> Read Now
+              Read Now
             </button>
           </div>
+
+          {/* RIGHT: AD (YOUR RED BOX AREA) */}
+          <div className="w-full lg:w-[750px] flex-shrink-0 flex items-start pt-16">
+            <AdCard />
+          </div>
+
         </div>
 
+        {/* ✅ AD 2 */}
+        <div className="mt-10">
+          <AdCard />
+        </div>
+
+        {/* CHAPTERS */}
         <section className="mt-12 space-y-4">
           <h2 className="text-xl font-bold">Chapters</h2>
-          <div className="grid gap-2">
-            {manga.chapters?.slice(0, 20).map((ch) => (
-              <button key={ch.id} onClick={() => openChapter(ch)} className="flex items-center justify-between px-4 py-3 rounded-lg border border-border bg-card hover:bg-secondary hover:border-primary/30 transition-all group">
-                <span className="text-sm font-medium text-foreground">{ch.number}: {ch.title}</span>
-                <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors">Read →</span>
-              </button>
-            ))}
-          </div>
-          {manga.chapters && manga.chapters.length > 20 && (
-            <p className="text-sm text-muted-foreground text-center">+ {manga.chapters.length - 20} more chapters</p>
-          )}
+
+          {manga.chapters.map((ch) => (
+            <button key={ch.id} onClick={() => openChapter(ch)} className="block w-full text-left p-3 border rounded">
+              {ch.number}: {ch.title}
+            </button>
+          ))}
         </section>
+
+        {/* ✅ AD 3 */}
+        <div className="mt-12">
+          <AdCard />
+        </div>
+
       </main>
 
       {readerOpen && selectedImages && (

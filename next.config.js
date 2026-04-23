@@ -6,6 +6,23 @@ const nextConfig = {
       { protocol: 'https', hostname: 'i.imgur.com' },
     ],
   },
-}
 
-module.exports = nextConfig
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'header',
+            key: 'x-forwarded-proto',
+            value: 'http',
+          },
+        ],
+        destination: 'https://mangaverse.dpdns.org/:path*',
+        permanent: true,
+      },
+    ];
+  },
+};
+
+module.exports = nextConfig;
