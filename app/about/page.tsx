@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "About MangaVerse — Read Manga Online Free",
   description: "Learn about MangaVerse — a free online platform to read manga. Discover genres, explore guides, and enjoy thousands of manga chapters without signup.",
   keywords: "about mangaverse, read manga online free, manga website, manga reader platform",
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   alternates: { canonical: "https://mangaverse.dpdns.org/about" },
 };
 

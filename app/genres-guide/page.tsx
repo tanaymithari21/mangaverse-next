@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Manga Genres Explained — Complete Guide | MangaVerse",
   description: "Complete guide to manga genres: action, romance, isekai, fantasy, horror, slice of life, seinen, and comedy. Find your perfect genre and discover popular manga series.",
   keywords: "manga genres, types of manga, action manga, romance manga, isekai manga, fantasy manga, horror manga",
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   alternates: { canonical: "https://mangaverse.dpdns.org/genres-guide" },
   openGraph: { title: "Manga Genres Explained — Complete Guide | MangaVerse", description: "Your complete guide to manga genres.", url: "https://mangaverse.dpdns.org/genres-guide", images: [{ url: "https://mangaverse.dpdns.org/og-genres.jpg" }] },
 };

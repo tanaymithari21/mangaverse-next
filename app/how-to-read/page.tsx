@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "How to Read Manga Online — Beginner's Guide | MangaVerse",
   description: "Complete beginner's guide to reading manga online. Learn manga reading direction, panel order, reader controls, keyboard shortcuts, and tips for new readers.",
   keywords: "how to read manga, manga reading direction, manga online guide, read manga right to left, manga panel order",
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   alternates: { canonical: "https://mangaverse.dpdns.org/how-to-read" },
   openGraph: { title: "How to Read Manga Online — Beginner's Guide | MangaVerse", description: "Everything a beginner needs to know about reading manga online.", url: "https://mangaverse.dpdns.org/how-to-read", images: [{ url: "https://mangaverse.dpdns.org/og-howto.jpg" }] },
 };

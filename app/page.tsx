@@ -10,7 +10,8 @@ export const metadata: Metadata = {
   title: "MangaVerse — Read Manga Online Free | Thousands of Series",
   description: "Read manga online free on MangaVerse. Browse thousands of manga series — action, romance, fantasy, isekai and more. Updated daily, no account required.",
   keywords: "read manga online, free manga, manga reader, online manga, manga series, anime manga, read manga free, mangaverse",
-  alternates: { canonical: "https://mangaverse.dpdns.org" },
+  alternates: { canonical: "https://mangaverse.dpdns.org/" },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   openGraph: {
     type: "website",
     title: "MangaVerse — Read Manga Online Free",
