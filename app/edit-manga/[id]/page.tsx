@@ -1,4 +1,4 @@
-"use client";
+
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Upload, ImagePlus, X, Trash2, GripVertical, Plus, Save, AlertTriangle } from "lucide-react";
@@ -77,15 +77,15 @@ const EditManga = () => {
     const { id } = useParams();
     const router = useRouter();
 
-    const [manga, setManga]           = useState<MangaData | null>(null);
-    const [allGenres, setAllGenres]   = useState<string[]>([]);
-    const [loading, setLoading]       = useState(true);
-    const [saving, setSaving]         = useState(false);
+    const [manga, setManga] = useState<MangaData | null>(null);
+    const [allGenres, setAllGenres] = useState<string[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
     const [newCoverFile, setNewCoverFile] = useState<File | null>(null);
     const [newCoverPreview, setNewCoverPreview] = useState<string | null>(null);
     const [confirmDelete, setConfirmDelete] = useState(false);
-    const [dragOver, setDragOver]     = useState<{ chapterId: number; overIdx: number } | null>(null);
-    const [dragPage, setDragPage]     = useState<{ chapterId: number; pageIdx: number } | null>(null);
+    const [dragOver, setDragOver] = useState<{ chapterId: number; overIdx: number } | null>(null);
+    const [dragPage, setDragPage] = useState<{ chapterId: number; pageIdx: number } | null>(null);
 
     // Fetch manga + genres
     useEffect(() => {
@@ -107,7 +107,7 @@ const EditManga = () => {
             });
             setAllGenres(genres);
         }).catch(console.error)
-          .finally(() => setLoading(false));
+            .finally(() => setLoading(false));
     }, [id]);
 
     if (loading || !manga) return (
@@ -360,11 +360,10 @@ const EditManga = () => {
                         <div className="flex flex-wrap gap-2">
                             {allGenres.map(g => (
                                 <button key={g} type="button" onClick={() => toggleGenre(g)}
-                                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                                        manga.genres.includes(g)
+                                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${manga.genres.includes(g)
                                             ? "bg-primary text-primary-foreground"
                                             : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                                    }`}>
+                                        }`}>
                                     {g}
                                 </button>
                             ))}
@@ -475,11 +474,10 @@ const EditManga = () => {
                                                     onDragOver={e => onDragOver(e, chapter.id, idx)}
                                                     onDrop={() => onDrop(chapter.id, idx)}
                                                     onDragEnd={() => { setDragPage(null); setDragOver(null); }}
-                                                    className={`relative group aspect-[3/4] rounded border overflow-hidden cursor-grab active:cursor-grabbing transition-all ${
-                                                        dragOver?.chapterId === chapter.id && dragOver?.overIdx === idx
+                                                    className={`relative group aspect-[3/4] rounded border overflow-hidden cursor-grab active:cursor-grabbing transition-all ${dragOver?.chapterId === chapter.id && dragOver?.overIdx === idx
                                                             ? "border-primary ring-1 ring-primary scale-95"
                                                             : "border-border"
-                                                    } ${page.isNew ? "ring-1 ring-green-500/50" : ""}`}
+                                                        } ${page.isNew ? "ring-1 ring-green-500/50" : ""}`}
                                                 >
                                                     <img src={page.imageUrl} alt={`p${idx + 1}`} className="w-full h-full object-cover" />
                                                     {/* Page number */}

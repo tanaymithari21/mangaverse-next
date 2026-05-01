@@ -1,4 +1,4 @@
-"use client";
+
 import { useState, useEffect, useRef } from "react";
 
 import { ArrowLeft, Plus, Pencil, Trash2, Check, X, AlertTriangle, Tag } from "lucide-react";
@@ -11,16 +11,16 @@ interface Genre {
 }
 
 const GenreManager = () => {
-    
-    const [genres, setGenres]         = useState<Genre[]>([]);
-    const [loading, setLoading]       = useState(true);
-    const [newName, setNewName]       = useState("");
-    const [adding, setAdding]         = useState(false);
-    const [editingId, setEditingId]   = useState<number | null>(null);
-    const [editDraft, setEditDraft]   = useState("");
-    const [confirmId, setConfirmId]   = useState<number | null>(null);
-    const [savingId, setSavingId]     = useState<number | null>(null);
-    const [toast, setToast]           = useState<{ msg: string; type: "info" | "error" } | null>(null);
+
+    const [genres, setGenres] = useState<Genre[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [newName, setNewName] = useState("");
+    const [adding, setAdding] = useState(false);
+    const [editingId, setEditingId] = useState<number | null>(null);
+    const [editDraft, setEditDraft] = useState("");
+    const [confirmId, setConfirmId] = useState<number | null>(null);
+    const [savingId, setSavingId] = useState<number | null>(null);
+    const [toast, setToast] = useState<{ msg: string; type: "info" | "error" } | null>(null);
     const addInputRef = useRef<HTMLInputElement>(null);
     const editInputRef = useRef<HTMLInputElement>(null);
 
@@ -109,11 +109,10 @@ const GenreManager = () => {
 
                 {/* Toast */}
                 {toast && (
-                    <div className={`mb-4 px-4 py-3 rounded-lg text-sm border flex items-center gap-2 ${
-                        toast.type === "info"
+                    <div className={`mb-4 px-4 py-3 rounded-lg text-sm border flex items-center gap-2 ${toast.type === "info"
                             ? "bg-blue-500/10 border-blue-500/30 text-blue-400"
                             : "bg-destructive/10 border-destructive/30 text-destructive"
-                    }`}>
+                        }`}>
                         {toast.type === "error" && <AlertTriangle size={13} />}
                         {toast.msg}
                     </div>
