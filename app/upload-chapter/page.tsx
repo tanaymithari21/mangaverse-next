@@ -1,4 +1,4 @@
-"use client";
+
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Upload, ArrowLeft, Search, X, ChevronLeft, ChevronRight, Star, BookPlus, Sparkles, ChevronDown, ChevronUp, GripVertical } from "lucide-react";
@@ -268,9 +268,8 @@ const ChapterForm = ({ manga, onBack }: { manga: MangaItem; onBack: () => void }
                 onDragOver={e => onDragOver(e, idx)}
                 onDrop={() => onDrop(idx)}
                 onDragEnd={onDragEnd}
-                className={`relative group aspect-[3/4] rounded-lg border overflow-hidden cursor-grab active:cursor-grabbing transition-all ${
-                  dragOverIdx === idx ? "border-primary ring-2 ring-primary scale-95" : "border-border"
-                }`}
+                className={`relative group aspect-[3/4] rounded-lg border overflow-hidden cursor-grab active:cursor-grabbing transition-all ${dragOverIdx === idx ? "border-primary ring-2 ring-primary scale-95" : "border-border"
+                  }`}
               >
                 <img src={URL.createObjectURL(file)} alt={`page-${idx + 1}`} className="w-full h-full object-cover pointer-events-none" />
                 {/* Page number */}
