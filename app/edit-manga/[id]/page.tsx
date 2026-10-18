@@ -361,8 +361,8 @@ const EditManga = () => {
                             {allGenres.map(g => (
                                 <button key={g} type="button" onClick={() => toggleGenre(g)}
                                     className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${manga.genres.includes(g)
-                                            ? "bg-primary text-primary-foreground"
-                                            : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                                        ? "bg-primary text-primary-foreground"
+                                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
                                         }`}>
                                     {g}
                                 </button>
@@ -475,8 +475,8 @@ const EditManga = () => {
                                                     onDrop={() => onDrop(chapter.id, idx)}
                                                     onDragEnd={() => { setDragPage(null); setDragOver(null); }}
                                                     className={`relative group aspect-[3/4] rounded border overflow-hidden cursor-grab active:cursor-grabbing transition-all ${dragOver?.chapterId === chapter.id && dragOver?.overIdx === idx
-                                                            ? "border-primary ring-1 ring-primary scale-95"
-                                                            : "border-border"
+                                                        ? "border-primary ring-1 ring-primary scale-95"
+                                                        : "border-border"
                                                         } ${page.isNew ? "ring-1 ring-green-500/50" : ""}`}
                                                 >
                                                     <img src={page.imageUrl} alt={`p${idx + 1}`} className="w-full h-full object-cover" />
