@@ -1,4 +1,4 @@
-
+"use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Upload, ArrowLeft, Search, X, ChevronLeft, ChevronRight, Star, BookPlus, Sparkles, ChevronDown, ChevronUp, GripVertical } from "lucide-react";

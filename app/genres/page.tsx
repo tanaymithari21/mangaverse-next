@@ -1,4 +1,4 @@
-
+"use client";
 import { useState, useEffect, useRef } from "react";
 
 import { ArrowLeft, Plus, Pencil, Trash2, Check, X, AlertTriangle, Tag } from "lucide-react";
