@@ -1,5 +1,4 @@
-
-
+"use client";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Upload, ImagePlus, X, Sparkles, ChevronDown, ChevronUp } from "lucide-react";

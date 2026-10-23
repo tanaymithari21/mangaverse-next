@@ -1,3 +1,4 @@
+"use client";
 
 import { Search, BookOpen, Menu, X } from "lucide-react";
 import Link from "next/link";
